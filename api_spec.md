@@ -27,7 +27,7 @@ The JSON can contain a subset of the following fields.
 Field |	Description |	Example  
 ------|-------------|--------  
 `app_key` |	Application key, created in the first step of a BigPanda tutorial.	| `"app_key": "<app key>"`  
-`comment`	| Text to post as a comment on user's feed.	| "comment": `"Uploaded new version to production – v2.0.3"`  
+`comment`	| Text to post as a comment on user's feed.	| `"comment": "Uploaded new version to production – v2.0.3"`  
 `count`	| The number of records to return when reading all comments.	| `"count": 100`  
 `offset`	| The number of records to skip before reading the next comments set.	| `"offset": 100`  
  
@@ -40,7 +40,7 @@ Field |	Description |	Example
 }
 ```  
 
-**Example JSON for reading single comment**  
+**Example JSON for reading a single comment**  
 Note: comment_id is the id returned in the creation of a comment's call.
 ```JSON
 {
@@ -57,7 +57,7 @@ Note: comment_id is the id returned in the creation of a comment's call.
 }
 ```
 
-**Example JSON for updating a comments**  
+**Example JSON for updating a comment**  
 Note: comment_id is the id returned in the creation of a comment's call.  
 ```JSON
 {
@@ -122,7 +122,7 @@ curl --request GET http://api.bigpanda.io/api/v1/comments/{comment_id}
 
 _Read all:_
 ```curl
-Curl --request GET http://api.bigpanda.io/api/v1/comments?count={count}&offset={offset} \
+curl --request GET http://api.bigpanda.io/api/v1/comments?count={count}&offset={offset} \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer <YOUR TOKEN>" \        
      
