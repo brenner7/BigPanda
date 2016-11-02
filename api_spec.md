@@ -1,11 +1,13 @@
 # Comments API
-The comments API will be used post thoughts and/or comments to the user's feed.
+The comments API will be used to post thoughts and/or comments to the user's feed.
 The comments will integrate into the feed in a chronological order.
 
 **Authentication and Headers**  
 Headers should include the application's access_token and the following headers:  
-`"Authorization: Bearer ${access_token}"`  
-`"Content-Type: application/json; charset=utf8"`  
+```
+"Authorization: Bearer ${access_token}"
+"Content-Type: application/json; charset=utf8"
+```
 
 **Methods Overview**  
 API Endpoint base URL is: http://api.bigpanda.io/api/v1  
@@ -13,10 +15,11 @@ API Endpoint base URL is: http://api.bigpanda.io/api/v1
 Action	| Methods |	API Endpoint |	Description  
 --------|---------|--------------|--------------  
 Create |	POST 	| /comments |	Send a new comment to BigPanda's feed.  
-Read |	GET |	/comments | Read a comment from BigPanda's feed.  
-Read All |	GET |	/comments/{comment_id}	| Read all available comments from BigPanda's feed.  
-Update |	POST |	/comments	| Update a comment on BigPanda's feed.  
-Delete |	DELETE |	/comments	| Delete a comment from BigPanda's feed.  
+Read |	GET |	/comments/{comment_id} | Read a comment from BigPanda's feed.  
+Read All |	GET |	/comments	| Read all available comments from BigPanda's feed.  
+Update |	POST |	/comments/{comment_id}	| Update a comment on BigPanda's feed.  
+Delete |	DELETE |	/comments/{comment_id}	| Delete a comment from BigPanda's feed.  
+Note: The comment id is returned upon a successful comment creation API call.
 
 **Parameters**  
 The JSON can contain a subset of the following fields.  
@@ -27,7 +30,7 @@ Field |	Description |	Example
 `comment`	| Text to post as a comment on user's feed.	| "comment": `"Uploaded new version to production – v2.0.3"`  
 `count`	| The number of records to return when reading all comments.	| `"count": 100`  
 `offset`	| The number of records to skip before reading the next comments set.	| `"offset": 100`  
-`Comment_id` |	The comment id returned upon a successful comment creation API call.	| `"comment_id: "98712"`  
+ 
 
 **Example JSON for comment creation**  
 ```JSON
@@ -42,7 +45,6 @@ Note: comment_id is the id returned in the creation of a comment's call.
 ```JSON
 {
   "app_key": "123",
-  "comment_id": 87929
 }
 ```
 
@@ -60,7 +62,6 @@ Note: comment_id is the id returned in the creation of a comment's call.
 ```JSON
 {
   "app_key": "123",
-  "comment_id": "87929",
   "comment": "Uploaded new version to production – v2.0.4"
 }
 ```
@@ -70,7 +71,6 @@ Note: comment_id is the id returned in the creation of a comment's call.
 ```JSON
 {
   "app_key": "123",
-  "comment_id": "87929"
 }
 ```
 
@@ -90,10 +90,13 @@ Response                   |	Description
 `501 Not Implemented`	| Unsupported method.  
 
 **Response Body Parameters**  
-For a successful API call, the response body will include the comment_id value.  
+For a successful API call, the response body will include the response code and comment_id value.  
 ```JSON
 {
-"comment_id": 87612 
+  "meta": {
+        "code": 200
+    }, 
+  "comment_id": 87612 
 }
 ```
 
@@ -102,40 +105,41 @@ Executing these commands in Shell, should present the results in BigPanda almost
 
 To use these commands, the user must replace the token and app key with the corresponding values in BigPanda, and must specify that the Content-type is application/json.  
 
-_Read:_  
-```curl
-curl -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <YOUR TOKEN>" \
-     http://api.bigpanda.io/api/v1/comments?comment_id={comment_id}
-```
-
-_Read all:_
-```curl
-Curl -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <YOUR TOKEN>" \        
-     http://api.bigpanda.io/api/v1/comments/{comment_id}?count={count}&offset={offset}
-```
-
 _Create:_
 ```curl
 curl -X POST -H "Content-Type: application/json" \
     -H "Authorization: Bearer <YOUR TOKEN>" \
     https://api.bigpanda.io/data/v1/comments \
-    -d '{ "app_key": "<APP KEY>", "comment_id": 87929}
+    -d '{ "app_key": "<APP KEY>", "comment": "New version uploaded to production – v2.0.1"}
+```
+
+_Read:_  
+```curl
+curl --request GET http://api.bigpanda.io/api/v1/comments/{comment_id}
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <YOUR TOKEN>" \
+```
+
+_Read all:_
+```curl
+Curl --request GET http://api.bigpanda.io/api/v1/comments?count={count}&offset={offset} \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <YOUR TOKEN>" \        
+     
 ```
 
 _Update:_
 ```curl
 curl -X POST -H "Content-Type: application/json" \
     -H "Authorization: Bearer <YOUR TOKEN>" \
-    https://api.bigpanda.io/data/v1/comments \
-    -d '{ "app_key": "<APP KEY>", "comment_id: 87929, "comment": "New version uploaded to production – v2.0.1"}
+    https://api.bigpanda.io/data/v1/comments/{comment_id} \
+    -d '{ "app_key": "<APP KEY>", "comment": "New version uploaded to production – v2.0.1"}
 ```
 
 _Delete:_
 ```curl
 curl -X DELETE \
     -H "Authorization: Bearer <YOUR TOKEN>" \
-    https://api.bigpanda.io/data/v1/comments \
+    https://api.bigpanda.io/data/v1/comments/{comment_id} \
     -d ""
 ```
