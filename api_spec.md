@@ -2,6 +2,8 @@
 The comments API will be used to post thoughts and/or comments to the user's feed.
 The comments will integrate into the feed in a chronological order.
 
+Requests and response are in JSON.
+
 **Authentication and Headers**  
 Headers should include the application's access_token and the following headers:  
 ```
@@ -80,12 +82,12 @@ When an API request is successful, the BigPanda server sends a response to indic
 Response                   |	Description  
 ---------------------------|-------------  
 `200 OK`	| Success.  
-`201 Created` |	New resource created.  
+`201 Created` |	New comment created.  
 `204 No Content` |	The server successfully processed the request and is not returning any content.  
 `400 Bad Request`	| Default code for invalid requests. For example, it is missing a mandatory field. Check the error message and ensure that the JSON includes the correct parameters.  
 `401 Unauthorized` |	Token is invalid or missing. Check that the request includes the correct HTTP headers.  
 `404 Not Found` |	Requested endpoint isn't available. Ensure that the request uses one of the API endpoints specified in the documentation.  
-`409 Conflict`	| Request cannot be performed due to a conflict. For example, attempting to resolve an incident that's already resolved.  
+`409 Conflict`	| Request cannot be performed due to a conflict. For example, attempting to read a comment that was deleted.  
 `500 Internal Server Error` |	Default code for errors that occur due to problems on BigPanda servers. Retry the request after some time.  
 `501 Not Implemented`	| Unsupported method.  
 
